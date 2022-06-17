@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Bootstrap Example</title>
   <meta charset="utf-8">
@@ -7,36 +8,204 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="./css/Cliente.css">
+  <script type="text/javascript" src="./js/Lineales/ListaDoble/ListaDoble.js"></script>
+  <script src="//d3js.org/d3.v5.min.js"></script>
+  <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+  <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+  <script type="text/javascript" src="./js/Lineales/ListaDoble/ListaCircularDoble.js"></script>
+  
 </head>
+
 <body>
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">LIBERIA USAC</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
-      <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">REPORTES <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">CLIENTES</a></li>
-          <li><a href="#">AUTORES</a></li>
-          <li><a href="#">LIBRERIA</a></li>
-        </ul>
-      </li>
-      <li><a href="#">IMAGENES</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-    </ul>
-  </div>
-</nav>
-  
-<div class="container">
-  <h3>Right Aligned Navbar</h3>
-  <p>The .navbar-right class is used to right-align navigation bar buttons.</p>
-</div>
+  <script>
+    function enablediv() {
+      document.getElementById("login").style.display = "";
+      document.getElementById("admin").style.display = "none";
+    }
 
+    function enablediv2() {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("admin").style.display = "";
+    }
+    function enablediv3() {
+      document.getElementById("ClienteCarga").style.display = "";
+      document.getElementById("AutoresCarga").style.display = "none";
+      document.getElementById("LibrosCarga").style.display = "none";
+
+    }
+    function enablediv4() {
+      document.getElementById("AutoresCarga").style.display = "";
+      document.getElementById("ClienteCarga").style.display = "none";
+      document.getElementById("LibrosCarga").style.display = "none";
+    }
+    function enablediv5() {
+      document.getElementById("AutoresCarga").style.display = "none";
+      document.getElementById("ClienteCarga").style.display = "none";
+      document.getElementById("LibrosCarga").style.display = "";
+    }
+
+
+  </script>
+
+  <div id="admin">
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">LIBERIA USAC</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">CARGA <span
+                class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li onclick="enablediv3()"><a href="#">CLIENTES</a></li>
+              <li onclick="enablediv4()"><a href="#">AUTORES</a></li>
+              <li onclick="enablediv5()"><a href="#">LIBROS</a></li>
+            </ul>
+          </li>
+          <li onclick="Autores.dotGraph()"><a href="#">IMAGENES</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li onclick="enablediv()"><a href="#" id="userLO"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+          </li>
+          <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div id="ClienteCarga" style="display: none">
+        <h2>Cargar masiva de clientes</h2>
+        <input id="fileInput" type="file" size="50" onchange="processFilesUser(this.files, Cliente)">
+        <div id="lienzo"></div>
+        <button type="submit" onclick="listaClientes.print();"></button>
+        <div class="cliente" id="fileOutput"></div>
+
+      </div>
+
+      <div id="AutoresCarga" style="display: none">
+        <h2>Cargar masiva de Autores</h2>
+        <input id="fileInputAutor" type="file" size="50" onchange="processFilesAutor(this.files, Autores)">
+        <div id="lienzoAutor"></div>
+        
+        <div class="Autor" id="fileOutputAutor"></div>
+      </div>
+
+      <div id="LibrosCarga" style="display: none">
+        <h2>Cargar masiva de Libros</h2>
+        <input id="fileInput" type="file" size="50" onchange="processFiles(this.files)">
+        <div class="cliente" id="fileOutput"></div>
+
+      </div>
+
+    </div>
+  </div>
+  <div style="display: none" id="login">
+
+    <div class="sidenav">
+      <div class="login-main-text">
+        <h2>Application<br> Login Page</h2>
+        <p>Login or register from here to access.</p>
+      </div>
+    </div>
+    <div class="main">
+      <div class="col-md-6 col-sm-12">
+        <div class="login-form">
+          <form>
+            <div class="form-group">
+              <label>User Name</label>
+              <input id="userN" type="text" class="form-control" placeholder="User Name">
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input id="pwL" type="password" class="form-control" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-black" onclick="Login(Cliente)">Login</button>
+            <button type="submit" class="btn btn-secondary">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script language="JavaScript">
+
+
+    function Login(lista) {
+
+      var usuario = document.getElementById("userN").value;
+      var password = document.getElementById("pwL").value;
+      var rol = 'Admin'
+      if (usuario == "admin" && password == "admin" && rol == 'Admin') {
+        enablediv2();
+        document.getElementById("userLO").textContent = usuario.toUpperCase();
+      } if (lista.buscarCliente(usuario, password) == "Usuario") {
+
+        enablediv2();
+        document.getElementById("userLO").textContent = usuario.toUpperCase();
+
+      } if (lista.buscarCliente(usuario, password) == "Administrador") {
+        enablediv2();
+        document.getElementById("userLO").textContent = usuario.toUpperCase();
+      } else {
+        alert("Usuario o contraseña incorrectos");
+      }
+    }
+
+    function processFilesUser(files, lista) {
+      var file = files[0];
+      console.log(file)
+      var reader = new FileReader();
+
+
+      reader.onload = function (e) {
+        // Cuando éste evento se dispara, los datos están ya disponibles.
+        // Se trata de copiarlos a una área <div> en la página.
+        let jsona = JSON.parse(e.target.result);
+        n = 0;
+        while (n < jsona.length) {
+
+          lista.addCliente(jsona[n].dpi, jsona[n].nombre_completo, jsona[n].nombre_usuario, jsona[n].correo, jsona[n].rol, jsona[n].contrasenia, jsona[n].telefono)
+          n++;
+        }
+
+        var output = document.getElementById("fileOutput");
+        output.textContent = e.target.result;
+
+      }
+      reader.readAsText(file);
+    }
+
+    function processFilesAutor(files, arbol) {
+      var file = files[0];
+      console.log(file)
+      var reader = new FileReader();
+
+
+      reader.onload = function (e) {
+        // Cuando éste evento se dispara, los datos están ya disponibles.
+        // Se trata de copiarlos a una área <div> en la página.
+        let jsona = JSON.parse(e.target.result);
+        n = 0;
+        while (n < jsona.length) {
+
+          arbol.insertar((jsona[n].nombre_autor).replace(/ /g, "ㅤ"))
+          n++;
+        }
+
+        var output = document.getElementById("fileOutputAutor");
+        output.textContent = e.target.result;
+
+      }
+      reader.readAsText(file);
+    }
+
+  </script>
+  
+  <script type="text/javascript" src="./js/Lineales/ListaDoble/ListadeListas.js"></script>
+  <script type="text/javascript" src="./js/Lineales/Arboreas/abb.js"></script>
 </body>
+
 </html>
