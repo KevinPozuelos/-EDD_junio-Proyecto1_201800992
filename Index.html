@@ -94,10 +94,11 @@
       </div>
 
       <div id="LibrosCarga" style="display: none">
-        <h2>Cargar masiva de Libros</h2>
-        <input id="fileInput" type="file" size="50" onchange="processFiles(this.files)">
-        <div class="cliente" id="fileOutput"></div>
-
+        <h2>Cargar masiva de Autores</h2>
+        <input id="fileInputLibros" type="file" size="50" onchange="processFilesAutor(this.files, Autores)">
+        <div id="lienzoLibro"></div>
+        
+        <div class="Libro" id="fileOutputLibro"></div>
       </div>
 
     </div>
