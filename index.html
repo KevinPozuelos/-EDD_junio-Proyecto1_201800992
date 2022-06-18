@@ -60,6 +60,11 @@
       document.getElementById("userLO1").textContent = "SignUp";
     }
 
+    function enablediv9() {
+      document.getElementById("Libros").style.display = "";
+      document.getElementById("containerslide").style.display = "none";
+    }
+
 
   </script>
 
@@ -79,7 +84,7 @@
               <li onclick="enablediv5()"><a href="#">LIBROS</a></li>
             </ul>
           </li>
-          <li onclick="Autores.dotGraph()"><a href="#">IMAGENES</a></li>
+          <li><a href="#">IMAGENES</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li onclick="enablediv()"><a href="#" id="userLO"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
@@ -94,7 +99,7 @@
         <h2>Cargar masiva de clientes</h2>
         <input id="fileInput" type="file" size="50" onchange="processFilesUser(this.files, Cliente)">
         <div id="lienzo"></div>
-        <button type="submit" onclick="listaClientes.print();"></button>
+        <button onclick="Cliente.dot2() ;">Graficar Clientes</button>
         <div class="cliente" id="fileOutput"></div>
 
       </div>
@@ -105,11 +110,12 @@
         <div id="lienzoAutor"></div>
         
         <div class="Autor" id="fileOutputAutor"></div>
+        <button  onclick="Autores.dotGraph()">Graficar Arbol</button>
       </div>
 
       <div id="LibrosCarga" style="display: none">
         <h2>Cargar masiva de Libros</h2>
-        <input id="fileInputLibros" type="file" size="50" onchange="processFilesLigros(this.files, Thriller, Fantasia)">
+        <input id="fileInputLibros" type="file" size="50" onchange="processFilesLigros(this.files, Thriller, Fantasia, Libros)">
         <div id="lienzoLibro"></div>
           <button onclick="Thriller.hacerGrafica()">dispersa</button>
           <button onclick="Fantasia.graph()">ortogonal</button>
@@ -218,7 +224,7 @@
       }
       reader.readAsText(file);
     }
-    function processFilesLigros(files, MatrizD, matrizO) {
+    function processFilesLigros(files, MatrizD, matrizO, libros) {
       var file = files[0];
       console.log(file)
       var reader = new FileReader();
@@ -233,11 +239,12 @@
 
           if(jsona[n].categoria === "Fantasia"){
             matrizO.agregar(jsona[n].fila,jsona[n].columna,jsona[n].nombre_libro  )
-
+            libros.insertar(jsona[n].nombre_libro, jsona[n].cantidad)
           }else if(jsona[n].categoria === "Thriller"){
             let fila = "x"+jsona[n].fila;
             let columna = "y"+jsona[n].columna;
             MatrizD.ingresar(jsona[n].nombre_libro, fila, columna)
+            libros.insertar(jsona[n].nombre_libro, jsona[n].cantidad)
           }
           n++;
         }
@@ -249,12 +256,15 @@
       reader.readAsText(file);
     }
 
+    
+
   </script>
   
   <script type="text/javascript" src="./js/Lineales/ListaDoble/ListadeListas.js"></script>
   <script type="text/javascript" src="./js/Lineales/Arboreas/abb.js"></script>
   <script type="text/javascript" src="./js/Lineales/Matriz/Dispersa.js"></script>
   <script type="text/javascript" src="./js/Lineales/Matriz/Ortogonal.js"></script>
+  <script type="text/javascript" src="./js/Lineales/ListaDoble/libros.js"></script>
   <div id="User-Home">
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
@@ -268,7 +278,8 @@
                     <ul class="dropdown-menu">
                         <li onclick="enablediv3()"><a href="#">COMPRA DE LIBROS</a></li>
                         <li onclick="enablediv4()"><a href="#">VISTA AUTORES</a></li>
-                        <li onclick="enablediv5()"><a href="#">LIBRERAS </a></li>
+                        <li onclick="enablediv9()"><a href="#">VISTA LIBROS </a></li>
+                        <li onclick="enablediv9()"><a href="#">VISTA LIBRERIAS </a></li>
                     </ul>
                 </li>
                 <li onclick="Cliente.dot2()"><a href="#">IMAGENES</a></li>
@@ -284,7 +295,7 @@
 
     <div class="container">
         <h1>Catsbooks</h1>
-        <div class="containerslide">
+        <div id="containerslide" class="containerslide">
 
             <ul class="slider">
               <li id="slide1">
@@ -324,24 +335,30 @@
           </div>
          
        
+          <div id="Compras" style="display: none">
 
+          </div>
+          <div id="Libros" style="display: none">
+            <div id="lienzoAcendente">
+                <button onclick="Libros.graficarCliente()">BubleSort</button>
+            </div>
+            <div id="lienzoDescendente" style="display: flex; justify-content: center;
+              align-items: center;">
+              <button onclick="Libros.graficarCliente2()">QuickSort</button>
+          </div>
+          </div>
+          <div id="Autores" style="display: none">
+      
+          </div>
+      </div>
         
 
        
 
     </div>
-    </div>
+    
 
-    <div id="Compras" style="display: none">
-
-    </div>
-    <div id="Libros" style="display: none">
-
-    </div>
-    <div id="Autores" style="display: none">
-
-    </div>
-</div>
+    
 </body>
 
 </html>

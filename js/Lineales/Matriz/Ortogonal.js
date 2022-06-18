@@ -229,13 +229,16 @@ class mOrtogonal {
             dot += this.graphNodos(this.raiz);
         }
         dot += "}";
+        d3.select('#lienzoLibro').graphviz()
+        .width(1200)
+        .height(1200)
+        .renderDot(dot)
         return console.log(dot);
     }
 
 }
 
 var Fantasia = new mOrtogonal();
-
 Fantasia.agregar(26,26,""); 
 
 
