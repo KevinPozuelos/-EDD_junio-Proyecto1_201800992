@@ -165,26 +165,26 @@ class mOrtogonal {
 
         for (let i = 0; i <= this.xMax; i++) {
             if (i === this.xMax) {
-                dot += "a" + (i) + ";\n"
+                dot += "x" + (i) + ";\n"
             } else {
-                dot += "a" + (i) + " -> "
+                dot += "x" + (i) + " -> "
             }
             
         }
         dot += "COORDENADAS ->"
         for (let i = 0; i <= this.yMax; i++) {
             if (i === this.yMax) {
-                dot += "b" + (i) + ";\n"
+                dot += "y" + (i) + ";\n"
             } else {
-                dot += "b" + (i) + " -> "
+                dot += "y" + (i) + " -> "
             }
-            ColValor += "b" + (i) + ";"
+            ColValor += "y" + (i) + ";"
         }
         dot += "{rank=same;" + ColValor + "};\n"
         let temp = this.raiz.x;
         while (temp != null) {
             let ColValor = "";
-            ColValor += "a" + temp.clave + ";"
+            ColValor += "x" + temp.clave + ";"
             let aux = temp.acceso;
             for (let i = 0; i <= this.yMax; i++) {
                 dot += " x" +
@@ -192,7 +192,7 @@ class mOrtogonal {
                     "y" + i +
                     "[label = \" \"]" + "\n"
             }
-            dot += "a" + temp.clave +
+            dot += "x" + temp.clave +
                 " -> x" +
                 temp.clave + "y" + 0
             ColValor += "x" + temp.clave + "y" + 0 + ";"
@@ -213,7 +213,7 @@ class mOrtogonal {
         }
         temp = this.raiz.y
         while (temp != null) {
-            dot += "\nb" + temp.clave + " -> x" + 0 + "y" + temp.clave;
+            dot += "\ny" + temp.clave + " -> x" + 0 + "y" + temp.clave;
             ColValor += "x" + 0 + "y" + temp.clave + ";"
             for (let i = 1; i <= this.xMax; i++) {
                 dot += " -> x" + i + "y" + temp.clave;
@@ -234,10 +234,8 @@ class mOrtogonal {
 
 }
 
-var OrtogonalMatrix = new mOrtogonal();
-OrtogonalMatrix.agregar(0, 0, "1");
-OrtogonalMatrix.agregar(0, 1, "2");
-OrtogonalMatrix.agregar(0, 2, "3");
-OrtogonalMatrix.agregar(4, 0, "4");
-OrtogonalMatrix.agregar(1, 2, "5");
-OrtogonalMatrix.graph();
+var Fantasia = new mOrtogonal();
+
+Fantasia.agregar(26,26,""); 
+
+

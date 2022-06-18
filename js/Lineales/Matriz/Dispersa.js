@@ -285,7 +285,7 @@ class NodoMatriz {
               aux = aux.derecha;
             }
   
-            return cadena;
+            return console.log(cadena);
           }
         }
       }
@@ -630,9 +630,10 @@ class NodoMatriz {
           tempVerti = tempVerti.abajo;
         }
   
-        dot +=("label = \"PROFUNDIDAD\";\n");
+        dot +=("label = \"DATO_REPETIDO\";\n");
         dot +=("}\n");
-        dot +=("}");
+        dot +=("}");  
+        
        
       }
       return console.log(dot);
@@ -640,7 +641,4 @@ class NodoMatriz {
   
   }
  
-let matriz = new Matriz();
-matriz.ingresar("URMONGAY", "COMPI", "KEVIN")
-matriz.ingresar("URMONGAY", "EDD", "RAUL")
-matriz.hacerGrafica();
+let Thriller = new Matriz();

@@ -164,4 +164,3 @@ pila.print();
 pila.dot();
 pila.invertirPila().dot2();
 
-export default stack;
