@@ -15,7 +15,7 @@
   <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
   <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
   <script type="text/javascript" src="./js/Lineales/ListaDoble/ListaCircularDoble.js"></script>
-  
+
 </head>
 
 <body>
@@ -55,7 +55,7 @@
       document.getElementById("User-Home").style.display = "";
     }
     function enablediv8() {
-      
+
       document.getElementById("User-Home").style.display = "";
       document.getElementById("userLO1").textContent = "SignUp";
     }
@@ -63,6 +63,20 @@
     function enablediv9() {
       document.getElementById("Libros").style.display = "";
       document.getElementById("containerslide").style.display = "none";
+      document.getElementById("Autores").style.display = "none";
+      document.getElementById("Libreras").style.display = "none";
+    }
+    function enablediv10() {
+      document.getElementById("Autores").style.display = "";
+      document.getElementById("Libros").style.display = "none";
+      document.getElementById("containerslide").style.display = "none";
+      document.getElementById("Libreras").style.display = "none";
+    }
+    function enablediv11() {
+      document.getElementById("Autores").style.display = "none";
+      document.getElementById("Libros").style.display = "none";
+      document.getElementById("containerslide").style.display = "none";
+      document.getElementById("Libreras").style.display = "";
     }
 
 
@@ -108,17 +122,18 @@
         <h2>Cargar masiva de Autores</h2>
         <input id="fileInputAutor" type="file" size="50" onchange="processFilesAutor(this.files, Autores)">
         <div id="lienzoAutor"></div>
-        
+
         <div class="Autor" id="fileOutputAutor"></div>
-        <button  onclick="Autores.dotGraph()">Graficar Arbol</button>
+        <button onclick="Autores.dotGraph()">Graficar Arbol</button>
       </div>
 
       <div id="LibrosCarga" style="display: none">
         <h2>Cargar masiva de Libros</h2>
-        <input id="fileInputLibros" type="file" size="50" onchange="processFilesLigros(this.files, Thriller, Fantasia, Libros)">
+        <input id="fileInputLibros" type="file" size="50"
+          onchange="processFilesLigros(this.files, Thriller, Fantasia, Libros)">
         <div id="lienzoLibro"></div>
-          <button onclick="Thriller.hacerGrafica()">dispersa</button>
-          <button onclick="Fantasia.graph()">ortogonal</button>
+        <button onclick="Thriller.hacerGrafica()">dispersa</button>
+        <button onclick="Fantasia.graph()">ortogonal</button>
         <div class="Libro" id="fileOutputLibro"></div>
       </div>
 
@@ -164,17 +179,32 @@
         enablediv2();
         document.getElementById("userLO").textContent = usuario.toUpperCase();
         alert("BIENVENIDO ADMINISTRADOR");
-      }else if (lista.buscarCliente(usuario, password) == "Usuario") {
+      } else if (lista.buscarCliente(usuario, password) == "Usuario") {
 
         enablediv7();
         document.getElementById("userLO1").textContent = usuario.toUpperCase();
 
-      }else if (lista.buscarCliente(usuario, password) == "Administrador") {
+      } else if (lista.buscarCliente(usuario, password) == "Administrador") {
         enablediv2();
         document.getElementById("userLO").textContent = usuario.toUpperCase();
       } else {
         alert("Usuario o contraseña incorrectos");
       }
+    }
+
+    function buscarAutor(Autores) {
+      var autor = document.getElementById("BusquedaAutor").value.replace(/ /g, "ㅤ");
+      console.log(autor)
+      let biografia = Autores.buscar(autor).biografia;
+      let correo = Autores.buscar(autor).correo;
+      let telefono = Autores.buscar(autor).telefono;
+      let direcccion = Autores.buscar(autor).direccion;
+      document.getElementById("BiografiaP").textContent = biografia;
+      document.getElementById("NombreAutorP").textContent = autor;
+      document.getElementById("CorreoAutor").textContent = "Correo: " + correo;
+      document.getElementById("TelefonoAutor").textContent = "Telefono: " + telefono;
+      document.getElementById("DireccionAutor").textContent = "Direccion: " + direcccion;
+      console.log(biografia)
     }
 
     function processFilesUser(files, lista) {
@@ -201,7 +231,7 @@
       reader.readAsText(file);
     }
 
-    function processFilesAutor(files, arbol) {
+    function processFilesAutor(files, arbol, arbolAux) {
       var file = files[0];
       console.log(file)
       var reader = new FileReader();
@@ -214,7 +244,8 @@
         n = 0;
         while (n < jsona.length) {
 
-          arbol.insertar((jsona[n].nombre_autor).replace(/ /g, "ㅤ"))
+          arbol.insertar((jsona[n].nombre_autor).replace(/ /g, "ㅤ"), jsona[n].biografia, jsona[n].correo, jsona[n].telefono, jsona[n].direccion);
+
           n++;
         }
 
@@ -237,12 +268,12 @@
         n = 0;
         while (n < jsona.length) {
 
-          if(jsona[n].categoria === "Fantasia"){
-            matrizO.agregar(jsona[n].fila,jsona[n].columna,jsona[n].nombre_libro  )
+          if (jsona[n].categoria === "Fantasia") {
+            matrizO.agregar(jsona[n].fila, jsona[n].columna, jsona[n].nombre_libro)
             libros.insertar(jsona[n].nombre_libro, jsona[n].cantidad)
-          }else if(jsona[n].categoria === "Thriller"){
-            let fila = "x"+jsona[n].fila;
-            let columna = "y"+jsona[n].columna;
+          } else if (jsona[n].categoria === "Thriller") {
+            let fila = "x" + jsona[n].fila;
+            let columna = "y" + jsona[n].columna;
             MatrizD.ingresar(jsona[n].nombre_libro, fila, columna)
             libros.insertar(jsona[n].nombre_libro, jsona[n].cantidad)
           }
@@ -256,109 +287,131 @@
       reader.readAsText(file);
     }
 
-    
+
 
   </script>
-  
+
   <script type="text/javascript" src="./js/Lineales/ListaDoble/ListadeListas.js"></script>
   <script type="text/javascript" src="./js/Lineales/Arboreas/abb.js"></script>
+
   <script type="text/javascript" src="./js/Lineales/Matriz/Dispersa.js"></script>
   <script type="text/javascript" src="./js/Lineales/Matriz/Ortogonal.js"></script>
   <script type="text/javascript" src="./js/Lineales/ListaDoble/libros.js"></script>
   <div id="User-Home">
     <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">LIBERIA USAC</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">MENU<span
-                            class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li onclick="enablediv3()"><a href="#">COMPRA DE LIBROS</a></li>
-                        <li onclick="enablediv4()"><a href="#">VISTA AUTORES</a></li>
-                        <li onclick="enablediv9()"><a href="#">VISTA LIBROS </a></li>
-                        <li onclick="enablediv9()"><a href="#">VISTA LIBRERIAS </a></li>
-                    </ul>
-                </li>
-                <li onclick="Cliente.dot2()"><a href="#">IMAGENES</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li onclick="enablediv()"><a href="#" id="userLO1"><span class="glyphicon glyphicon-user"></span> Sign
-                        Up</a>
-                </li>
-                <li onclick="enablediv8()"><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-            </ul>
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">LIBERIA USAC</a>
         </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">MENU<span
+                class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li onclick="enablediv3()"><a href="#">COMPRA DE LIBROS</a></li>
+              <li onclick="enablediv10()"><a href="#">VISTA AUTORES</a></li>
+              <li onclick="enablediv9()"><a href="#">VISTA LIBROS </a></li>
+              <li onclick="enablediv11()"><a href="#">VISTA LIBRERIAS </a></li>
+            </ul>
+          </li>
+          <li onclick="Cliente.dot2()"><a href="#">IMAGENES</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li onclick="enablediv()"><a href="#" id="userLO1"><span class="glyphicon glyphicon-user"></span> Sign
+              Up</a>
+          </li>
+          <li onclick="enablediv8()"><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        </ul>
+      </div>
     </nav>
 
     <div class="container">
-        <h1>Catsbooks</h1>
-        <div id="containerslide" class="containerslide">
+      <h1>Catsbooks</h1>
+      <div id="containerslide" class="containerslide">
 
-            <ul class="slider">
-              <li id="slide1">
-                <img src="http://harpolibros.com/modules/homeslider/images/e2492742aae459d796d59a665850917763a8bb77_slide MUNDO DE SIETE POZOS.jpg"/>
-              </li>
-              <li id="slide2">
-                <img src="http://harpolibros.com/modules/homeslider/images/6a1f27b459886d482870d7eeed4dedde73dacdd9_slide AUTE.jpg"/>
-              </li>
-              <li id="slide3">
-                < <img src="http://harpolibros.com/modules/homeslider/images/848fb49bf2c4fb7f55963df2b14a273ae1dcac26_slide jon bilbao.jpg"/>
-              </li>
-              <li id="slide4">
-                < <img src="http://harpolibros.com/modules/homeslider/images/3d8346adbcf6b9e001e681fb864c868643ed0008_slide EMILY.jpg"/>
-              </li>
-            </ul>
-            
-            <ul class="menu">
-              <li>
-                <a href="#slide1">1</a>
-              </li>
-              <li>
-                <a href="#slide2">2</a>
-              </li>
-               <li>
-                <a href="#slide3">3</a>
-              </li>
-                 <li>
-                  <a href="#slide4">4</a>
-                </li>
-            </ul>
-            <div>
-              <h2>TOP CLIENTES</h2>
-              <button>Mostrar</button>
-              <div id="lienzoTop"></div>
-            </div>
-            
-          </div>
-         
-       
-          <div id="Compras" style="display: none">
+        <ul class="slider">
+          <li id="slide1">
+            <img
+              src="http://harpolibros.com/modules/homeslider/images/e2492742aae459d796d59a665850917763a8bb77_slide MUNDO DE SIETE POZOS.jpg" />
+          </li>
+          <li id="slide2">
+            <img
+              src="http://harpolibros.com/modules/homeslider/images/6a1f27b459886d482870d7eeed4dedde73dacdd9_slide AUTE.jpg" />
+          </li>
+          <li id="slide3">
+            < <img
+              src="http://harpolibros.com/modules/homeslider/images/848fb49bf2c4fb7f55963df2b14a273ae1dcac26_slide jon bilbao.jpg" />
+          </li>
+          <li id="slide4">
+            < <img
+              src="http://harpolibros.com/modules/homeslider/images/3d8346adbcf6b9e001e681fb864c868643ed0008_slide EMILY.jpg" />
+          </li>
+        </ul>
 
-          </div>
-          <div id="Libros" style="display: none">
-            <div id="lienzoAcendente">
-                <button onclick="Libros.graficarCliente()">BubleSort</button>
-            </div>
-            <div id="lienzoDescendente" style="display: flex; justify-content: center;
-              align-items: center;">
-              <button onclick="Libros.graficarCliente2()">QuickSort</button>
-          </div>
-          </div>
-          <div id="Autores" style="display: none">
-      
-          </div>
+        <ul class="menu">
+          <li>
+            <a href="#slide1">1</a>
+          </li>
+          <li>
+            <a href="#slide2">2</a>
+          </li>
+          <li>
+            <a href="#slide3">3</a>
+          </li>
+          <li>
+            <a href="#slide4">4</a>
+          </li>
+        </ul>
+        <div>
+          <h2>TOP CLIENTES</h2>
+          <button>Mostrar</button>
+          <div id="lienzoTop"></div>
+        </div>
+
       </div>
-        
 
-       
+
+      <div id="Compras" style="display: none">
+
+      </div>
+      <div id="Libros" style="display: none">
+        <div id="lienzoAcendente">
+          <button onclick="Libros.graficarCliente()">BubleSort</button>
+        </div>
+        <div id="lienzoDescendente" style="display: flex; justify-content: center;
+              align-items: center;">
+          <button onclick="Libros.graficarCliente2()">QuickSort</button>
+        </div>
+      </div>
 
     </div>
     
 
-    
+
+    <div id="Autores" style="display: none">
+      <form>
+        <div class="form-group">
+          <label>Busque de autor</label>
+          <input id="BusquedaAutor" type="text" class="form-control" placeholder="User Name">
+          <button onclick="buscarAutor(Autores)">BUSCAR AUTOR</button>
+          <h1 id="NombreAutorP"></h1>
+          <p id="BiografiaP"></p>
+          <h3 id="CorreoAutor"></h3>
+          <h3 id="TelefonoAutor"></h3>
+          <h3 id="DireccionAutor"></h3>
+        </div>
+      </form>
+    </div>
+      <div id="Libreras" style=" display: none ; background-image: url('/img/estanteria-berlin-4-estantes-surtida-150.jpg');height: 750px;
+      width: 120%;background-repeat: no-repeat, no-repeat">
+        <button onclick="Fantasia.graphL()">MOSTRAR LIBERAS</button>
+      </div>
+
+  </div>
+  </div>
+
+
+
 </body>
 
 </html>

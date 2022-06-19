@@ -1,10 +1,14 @@
 class NodoA{
-    constructor(valor) {
-    this.dpi  
+    constructor(valor, biografia, correo, telefono, direccion) {
     this.valor = valor;
+    this.biografia = biografia
+    this.correo = correo
+    this.telefono = telefono
+    this.direccion = direccion
     this.izquierdo=null;
     this.derecho=null;
     }
+
     abbGraph =() => {
         let graph = "";
         if(this.izquierdo == null && this.derecho == null){
@@ -28,18 +32,18 @@ class ABB{
         this.raiz = null;
     }
 
-    insertar(valor){
-        this.raiz = this.add(valor, this.raiz);
+    insertar(valor, biografia, correo, telefono, direccion){
+        this.raiz = this.add(valor, biografia, correo,telefono,direccion, this.raiz);
     }
 
-    add(valor, nodo){
+    add(valor,biografia,correo,telefono,direccion, nodo){
         if (nodo == null){
-            return new NodoA(valor);
+            return new NodoA(valor, biografia,correo, telefono, direccion);
         }else{
             if ( valor > nodo.valor){
-                nodo.derecho = this.add(valor, nodo.derecho);
+                nodo.derecho = this.add(valor,biografia,correo,telefono,direccion, nodo.derecho);
             }else {
-                nodo.izquierdo = this.add(valor, nodo.izquierdo);
+                nodo.izquierdo = this.add(valor,biografia,correo,telefono,direccion, nodo.izquierdo);
             }
         }
         return nodo;
@@ -87,6 +91,7 @@ class ABB{
         } else {
             
             if(nodo.izquierdo != null){
+              
                 graph += nodo.valor + "->"+ this.graphRaiz(nodo.izquierdo)+"\n";
             }
             if(nodo.derecho!= null){
@@ -121,6 +126,24 @@ class ABB{
             .renderDot(codigodot)
         
         return console.log(codigodot);
+    }
+    buscar =(valor, aux = this.raiz)=>{
+        
+        if(valor > aux.valor){
+            if(aux.derecho != null){
+                return this.buscar(valor, aux.derecho)
+            }else{
+                return false
+            }
+        }else if(valor < aux.valor){
+            if(aux.izquierdo != null){
+                return this.buscar(valor, aux.izquierdo)
+            }else{
+                return false
+            }
+        }else{
+            return aux
+        }
     }
 
     

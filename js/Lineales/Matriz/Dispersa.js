@@ -642,6 +642,141 @@ class NodoMatriz {
       .renderDot(dot)
       return console.log(dot);
     }
+
+    hacerGraficaD() {
+      var AUX2Verti, AUXtempHorizont, AUXtempVerti, file, tempHorizont, tempVerti;
+        let dot = "";
+      if (this.vacioHorizont() === true || this.vacioVerti() === true) {
+        return;
+      } else {
+        
+        dot +=("digraph G\n{\n");
+        tempHorizont = this.inicioHorizontal;
+        tempVerti = this.inicioVertical;
+        dot +=("\"INICIO\"[label = \"Inicio\", style = filled, fillcolor=\"#0D5A73\", fontcolor=\"#A2E7FF\", shape=box]\n");
+        dot +=("\"INICIO\" -> \"n" + tempVerti.getYes().toString() + "\"\n");
+  
+        while (tempVerti !== null) {
+          dot +=("\"n" + tempVerti.getYes().toString() + "\"[label = \"" + tempVerti.getYes().toString() + "\", style = filled, fillcolor=\"#E1E16E\", fontcolor=\"#040404\", shape=box]\n");
+  
+          if (tempVerti.abajo !== null) {
+            dot +=("\"n" + tempVerti.getYes().toString() + "\" -> \"n" + tempVerti.abajo.getYes().toString() + "\"[rankdir=UD];\n");
+            dot +=("\"n" + tempVerti.abajo.getYes().toString() + "\" -> \"n" + tempVerti.getYes().toString() + "\"\n");
+          }
+  
+          if (tempVerti.derecha !== null) {
+            dot +=("\"n" + tempVerti.derecha.getYes().toString() + "," + tempVerti.derecha.getBandera().toString() + "," + tempVerti.derecha.getEquis().toString() + "\"[label = \"" + tempVerti.derecha.getBandera().toString() + "\", style = filled, fillcolor=\"#5C5C5A\", fontcolor=\"#FCFC29\", shape=circle]\n");
+            dot +=("\"n" + tempVerti.getYes().toString() + "\" -> \"n" + tempVerti.derecha.getYes().toString() + "," + tempVerti.derecha.getBandera().toString() + "," + tempVerti.derecha.getEquis().toString() + "\"[constraint=false];\n");
+            dot +=("\"n" + tempVerti.derecha.getYes().toString() + "," + tempVerti.derecha.getBandera().toString() + "," + tempVerti.derecha.getEquis().toString() + "\" -> \"n" + tempVerti.getYes().toString() + "\"[constraint=false];\n");
+            dot +=("{rank=same; \"n" + tempVerti.getYes().toString() + "\"  \"n" + tempVerti.derecha.getYes().toString() + "," + tempVerti.derecha.getBandera().toString() + "," + tempVerti.derecha.getEquis().toString() + "\"}\n");
+            dot +=("{rank=same; \"n" + tempVerti.derecha.getYes().toString() + "," + tempVerti.derecha.getBandera().toString() + "," + tempVerti.derecha.getEquis().toString() + "\"  \"n" + tempVerti.getYes().toString() + "\"}\n");
+            AUXtempVerti = tempVerti.derecha;
+          }
+  
+          while (AUXtempVerti.derecha !== null) {
+            dot +=("\"n" + AUXtempVerti.derecha.getYes().toString() + "," + AUXtempVerti.derecha.getBandera().toString() + "," + AUXtempVerti.derecha.getEquis().toString() + "\"[label = \"" + AUXtempVerti.derecha.getBandera().toString() + "\", style = filled, fillcolor=\"#5C5C5A\", fontcolor=\"#FCFC29\", shape=circle]\n");
+            dot +=("\"n" + AUXtempVerti.getYes().toString() + "," + AUXtempVerti.getBandera().toString() + "," + AUXtempVerti.getEquis().toString() + "\" -> \"n" + AUXtempVerti.derecha.getYes().toString() + "," + AUXtempVerti.derecha.getBandera().toString() + "," + AUXtempVerti.derecha.getEquis().toString() + "\"[constraint=false];\n");
+            dot +=("\"n" + AUXtempVerti.derecha.getYes().toString() + "," + AUXtempVerti.derecha.getBandera().toString() + "," + AUXtempVerti.derecha.getEquis().toString() + "\" -> \"n" + AUXtempVerti.getYes().toString() + "," + AUXtempVerti.getBandera().toString() + "," + AUXtempVerti.getEquis().toString() + "\"[constraint=false];\n");
+            dot +=("{rank=same; \"n" + AUXtempVerti.getYes().toString() + "," + AUXtempVerti.getBandera().toString() + "," + AUXtempVerti.getEquis().toString() + "\" \"n" + AUXtempVerti.derecha.getYes().toString() + "," + AUXtempVerti.derecha.getBandera().toString() + "," + AUXtempVerti.derecha.getEquis().toString() + "\"}\n");
+            dot +=("{rank=same; \"n" + AUXtempVerti.derecha.getYes().toString() + "," + AUXtempVerti.derecha.getBandera().toString() + "," + AUXtempVerti.derecha.getEquis().toString() + "\" \"n" + AUXtempVerti.getYes().toString() + "," + AUXtempVerti.getBandera().toString() + "," + AUXtempVerti.getEquis().toString() + "\"}\n");
+            AUXtempVerti = AUXtempVerti.derecha;
+          }
+  
+          tempVerti = tempVerti.abajo;
+        }
+  
+        dot +=("\"INICIO\" -> \"n" + tempHorizont.getEquis().toString() + "\"\n");
+        dot +=("{rank=same; \"INICIO\"  \"n" + tempHorizont.getEquis().toString() + "\"}\n");
+  
+        while (tempHorizont !== null) {
+          dot +=("\"n" + tempHorizont.getEquis().toString() + "\"[label = \"" + tempHorizont.getEquis().toString() + "\", style = filled, fillcolor=\"#E1E16E\", fontcolor=\"#040404\", shape=box]\n");
+  
+          if (tempHorizont.derecha !== null) {
+            dot +=("\"n" + tempHorizont.getEquis().toString() + "\" -> \"n" + tempHorizont.derecha.getEquis().toString() + "\"\n");
+            dot +=("\"n" + tempHorizont.derecha.getEquis().toString() + "\" -> \"n" + tempHorizont.getEquis().toString() + "\"\n");
+            dot +=("{rank=same; \"n" + tempHorizont.getEquis().toString() + "\"  \"n" + tempHorizont.derecha.getEquis().toString() + "\"}\n");
+            dot +=("{rank=same; \"n" + tempHorizont.derecha.getEquis().toString() + "\"  \"n" + tempHorizont.getEquis().toString() + "\"}\n");
+          }
+  
+          if (tempHorizont.abajo !== null) {
+            dot +=("\"n" + tempHorizont.getEquis().toString() + "\" -> \"n" + tempHorizont.abajo.getYes().toString() + "," + tempHorizont.abajo.getBandera().toString() + "," + tempHorizont.abajo.getEquis().toString() + "\"[rankdir=UD];\n");
+            dot +=("\"n" + tempHorizont.abajo.getYes().toString() + "," + tempHorizont.abajo.getBandera().toString() + "," + tempHorizont.abajo.getEquis().toString() + "\" -> \"n" + tempHorizont.getEquis().toString() + "\"\n");
+            AUXtempHorizont = tempHorizont.abajo;
+          }
+  
+          while (AUXtempHorizont.abajo !== null) {
+            dot +=("\"n" + AUXtempHorizont.getYes().toString() + "," + AUXtempHorizont.getBandera().toString() + "," + AUXtempHorizont.getEquis().toString() + "\" -> \"n" + AUXtempHorizont.abajo.getYes().toString() + "," + AUXtempHorizont.abajo.getBandera().toString() + "," + AUXtempHorizont.abajo.getEquis().toString() + "\"[rankdir=UD];\n");
+            dot +=("\"n" + AUXtempHorizont.abajo.getYes().toString() + "," + AUXtempHorizont.abajo.getBandera().toString() + "," + AUXtempHorizont.abajo.getEquis().toString() + "\" -> \"n" + AUXtempHorizont.getYes().toString() + "," + AUXtempHorizont.getBandera().toString() + "," + AUXtempHorizont.getEquis().toString() + "\"\n");
+            AUXtempHorizont = AUXtempHorizont.abajo;
+          }
+  
+          tempHorizont = tempHorizont.derecha;
+        }
+  
+        dot +=("subgraph cluster_0 {\n");
+        dot +=("style=filled;\n");
+        dot +=("color=grey;\n");
+        dot +=("node [style=filled,color=white];\n");
+        tempVerti = this.inicioVertical;
+  
+        while (tempVerti !== null) {
+          if (tempVerti.derecha !== null) {
+            AUXtempVerti = tempVerti.derecha;
+          }
+  
+          while (AUXtempVerti.derecha !== null) {
+            if (AUXtempVerti.atras !== null) {
+              dot +=("\"extra" + AUXtempVerti.getEquis().toString() + "\"[label = \"" + AUXtempVerti.derecha.getEquis().toString() + "\", style = filled, shape=box]\n");
+            }
+  
+            if (AUXtempVerti.atras !== null) {
+              dot +=("\"extra" + AUXtempVerti.getEquis().toString() + "\"[label = \"" + AUXtempVerti.getEquis().toString() + "\", style = filled, shape=box]\n");
+              dot +=("\"n" + AUXtempVerti.atras.getYes().toString() + "," + AUXtempVerti.atras.getBandera().toString() + "," + AUXtempVerti.atras.getEquis().toString() + "\"[label = \"" + AUXtempVerti.atras.getBandera().toString() + "\", style = filled, shape=circle]\n");
+              dot +=("\"extra" + AUXtempVerti.getEquis().toString() + "\" -> \"n" + AUXtempVerti.atras.getYes().toString() + "," + AUXtempVerti.atras.getBandera().toString() + "," + AUXtempVerti.atras.getEquis().toString() + "\"\n");
+              dot +=("\"n" + AUXtempVerti.atras.getYes().toString() + "," + AUXtempVerti.atras.getBandera().toString() + "," + AUXtempVerti.atras.getEquis().toString() + "\" -> \"extra" + AUXtempVerti.getEquis().toString() + "\"\n");
+              AUX2Verti = AUXtempVerti.atras;
+  
+              while (AUX2Verti.atras !== null) {
+                dot +=("\"n" + AUX2Verti.atras.getYes().toString() + "," + AUX2Verti.atras.getBandera().toString() + "," + AUX2Verti.atras.getEquis().toString() + "\"[label = \"" + AUX2Verti.atras.getBandera().toString() + "\", style = filled, shape=circle]\n");
+                dot +=("\"n" + AUX2Verti.getYes().toString() + "," + AUX2Verti.getBandera().toString() + "," + AUX2Verti.getEquis().toString() + "\" -> \"n" + AUX2Verti.atras.getYes().toString() + "," + AUX2Verti.atras.getBandera().toString() + "," + AUX2Verti.atras.getEquis().toString() + "\"\n");
+                dot +=("\"n" + AUX2Verti.atras.getYes().toString() + "," + AUX2Verti.atras.getBandera().toString() + "," + AUX2Verti.atras.getEquis().toString() + "\" -> \"n" + AUX2Verti.getYes().toString() + "," + AUX2Verti.getBandera().toString() + "," + AUX2Verti.getEquis().toString() + "\"\n");
+                AUX2Verti = AUX2Verti.atras;
+              }
+            }
+  
+            AUXtempVerti = AUXtempVerti.derecha;
+          }
+  
+          if (AUXtempVerti.atras !== null) {
+            dot +=("\"extra" + AUXtempVerti.getEquis().toString() + "\"[label = \"" + AUXtempVerti.getEquis().toString() + "\", style = filled, shape=box]\n");
+            dot +=("\"n" + AUXtempVerti.atras.getYes().toString() + "," + AUXtempVerti.atras.getBandera().toString() + "," + AUXtempVerti.atras.getEquis().toString() + "\"[label = \"" + AUXtempVerti.atras.getBandera().toString() + "\", style = filled, shape=circle]\n");
+            dot +=("\"extra" + AUXtempVerti.getEquis().toString() + "\" -> \"n" + AUXtempVerti.atras.getYes().toString() + "," + AUXtempVerti.atras.getBandera().toString() + "," + AUXtempVerti.atras.getEquis().toString() + "\"\n");
+            dot +=("\"n" + AUXtempVerti.atras.getYes().toString() + "," + AUXtempVerti.atras.getBandera().toString() + "," + AUXtempVerti.atras.getEquis().toString() + "\" -> \"extra" + AUXtempVerti.getEquis().toString() + "\"\n");
+            AUX2Verti = AUXtempVerti.atras;
+  
+            while (AUX2Verti.atras !== null) {
+              dot +=("\"n" + AUX2Verti.atras.getYes().toString() + "," + AUX2Verti.atras.getBandera().toString() + "," + AUX2Verti.atras.getEquis().toString() + "\"[label = \"" + AUX2Verti.atras.getBandera().toString() + "\", style = filled, shape=circle]\n");
+              dot +=("\"n" + AUX2Verti.getYes().toString() + "," + AUX2Verti.getBandera().toString() + "," + AUX2Verti.getEquis().toString() + "\" -> \"n" + AUX2Verti.atras.getYes().toString() + "," + AUX2Verti.atras.getBandera().toString() + "," + AUX2Verti.atras.getEquis().toString() + "\"\n");
+              dot +=("\"n" + AUX2Verti.atras.getYes().toString() + "," + AUX2Verti.atras.getBandera().toString() + "," + AUX2Verti.atras.getEquis().toString() + "\" -> \"n" + AUX2Verti.getYes().toString() + "," + AUX2Verti.getBandera().toString() + "," + AUX2Verti.getEquis().toString() + "\"\n");
+              AUX2Verti = AUX2Verti.atras;
+            }
+          }
+  
+          tempVerti = tempVerti.abajo;
+        }
+  
+        dot +=("label = \"DATO_REPETIDO\";\n");
+        dot +=("}\n");
+        dot +=("}");  
+        
+       
+      }
+      d3.select('#lienzoLibro').graphviz()
+      .width(1200)
+      .height(1200)
+      .renderDot(dot)
+      return console.log(dot);
+    }
   
   }
  

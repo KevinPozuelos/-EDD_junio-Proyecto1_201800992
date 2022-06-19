@@ -1,5 +1,6 @@
-class Nodo{
-    constructor(valor) {
+class Nodobinario{
+    constructor(valor, biografia) {
+    this.biografia = biografia;
     this.valor = valor;
     this.izquierdo=null;
     this.derecho=null;
@@ -22,23 +23,23 @@ class Nodo{
     
 }
 
-class ABB{
+class ABBB{
     constructor() {
         this.raiz = null;
     }
 
-    insertar(valor){
-        this.raiz = this.add(valor, this.raiz);
+    insertar(valor, biografia){
+        this.raiz = this.add(valor, biografia, this.raiz);
     }
 
-    add(valor, nodo){
+    add(valor, biografia, nodo){
         if (nodo == null){
-            return new Nodo(valor);
+            return new Nodobinario(valor, biografia);
         }else{
             if ( valor > nodo.valor){
-                nodo.derecho = this.add(valor, nodo.derecho);
+                nodo.derecho = this.add(valor, biografia, nodo.derecho);
             }else {
-                nodo.izquierdo = this.add(valor, nodo.izquierdo);
+                nodo.izquierdo = this.add(valor, biografia, nodo.izquierdo);
             }
         }
         return nodo;
@@ -118,18 +119,26 @@ class ABB{
         return console.log(codigodot);
     }
 
+    buscar =(valor, aux = this.raiz)=>{
+        
+        if(valor > aux.valor){
+            if(aux.derecho != null){
+                return this.buscar(valor, aux.derecho)
+            }else{
+                return false
+            }
+        }else if(valor < aux.valor){
+            if(aux.izquierdo != null){
+                return this.buscar(valor, aux.izquierdo)
+            }else{
+                return false
+            }
+        }else{
+            return console.log(aux.biografia);
+        }
+    }
+
     
 }
 
-let arbol = new ABB();
-arbol.insertar("kevin");
-arbol.insertar("dCoti")
-arbol.insertar("Raul")
-arbol.insertar("Leslie")
-arbol.insertar("juan")
-arbol.insertar("perez")
-arbol.insertar("jose")
-arbol.insertar("enma")
-arbol.insertar("miguel")
-
-arbol.dotGraph();
+let autoresAux = new ABBB();

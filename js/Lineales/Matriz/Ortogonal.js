@@ -235,6 +235,18 @@ class mOrtogonal {
         .renderDot(dot)
         return console.log(dot);
     }
+    graphL = () => {
+        let dot = "digraph G{\nbgcolor=none\n nodesep=1;\nnode [shape=box3d]; \n";
+        if (this.raiz) {
+            dot += this.graphNodos(this.raiz);
+        }
+        dot += "}";
+        d3.select('#Libreras').graphviz()
+        .width(1300)
+        .height(1300)
+        .renderDot(dot)
+        return console.log(dot);
+    }
 
 }
 
