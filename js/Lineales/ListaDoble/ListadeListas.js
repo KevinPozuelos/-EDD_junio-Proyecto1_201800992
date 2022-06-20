@@ -5,8 +5,8 @@ class nodo{
         
     }
 }class nodoL{
-    constructor(dpi, userName) {
-        this.dpi = dpi;
+    constructor(userName) {
+        
         this.userName = userName;
         this.libros = new Lista();
         this.siguiente = this.anterior = null;
@@ -53,7 +53,7 @@ class ListadeListas{
     search = (dpi) => {
         let aux = this.raiz;
         while(aux != null){
-            if(aux.dpi == dpi){
+            if(aux.userName == dpi){
                 return true;
             }
             aux = aux.siguiente;
@@ -62,23 +62,25 @@ class ListadeListas{
 
     }
 
-    insert = (dpi, userName, libro) => {
+    insert = (userName, libro) => {
         if( this.raiz == null){
-            this.raiz = this.ultimo = new nodoL(dpi, userName);
+            this.raiz = this.ultimo = new nodoL(userName);
             this.raiz.libros.add(libro);
             return ;
         } else{
-            if ( this.search(dpi) == false){
-               let  nuevo = new nodoL(dpi, userName)
+            if ( this.search(userName) == false){
+               let  nuevo = new nodoL(userName)
                 nuevo.libros.add(libro)
                 this.ultimo.siguiente = nuevo;
                 nuevo.anterior = this.ultimo;
                 this.ultimo = nuevo;
+                this.size++;
                 return ;
 
             } else {
-                let temp = this.get(dpi)
+                let temp = this.get(userName)
                 temp.libros.add(libro)
+                this.size++;
                 return;
             }
         }
@@ -88,7 +90,7 @@ class ListadeListas{
     get=(dpi) => {
         let aix = this.raiz
         while( aix != null){
-            if(aix.dpi == dpi){
+            if(aix.userName == dpi){
                 return aix;
             }
             aix = aix.siguiente;
@@ -121,37 +123,50 @@ class ListadeListas{
             }
             contador++;
             vertical = vertical.siguiente;
-
-
         }
-        codigodot += "\n";
+        vertical = this.raiz
+        while(vertical !=null){
+            if(vertical==this.raiz){
+                codigodot+= "\"" + vertical.userName + "\""
+            }else{
+                codigodot+="->\"" + vertical.userName + "\"" 
+            }
+            vertical = vertical.siguiente;
+        }
+        codigodot+= "[dir=both]"
+        codigodot+="\n"
         vertical = this.raiz
         while(vertical != null){
             let horizontal = vertical.libros.raiz
             if(horizontal != null){
-                codigodot += "\"" + vertical.userName + "\"->\"" + horizontal.nombreLibro + "\";\n";
-                while (horizontal != null){
+                codigodot += "\"" + vertical.userName + "\"->\"" +horizontal.nombreLibro + "\"\n";
+                while(horizontal != null){
                     if(horizontal == vertical.libros.raiz){
-                        codigodot += "\"" + horizontal.nombreLibro + "\"";
-                    }else{
-                        codigodot += "->\"" + horizontal.nombreLibro + "\"";
-                    }
+                        codigodot+= "\""+ horizontal.nombreLibro + "\""
+                     }else{
+                         codigodot+="->\"" + horizontal.nombreLibro + "\""
+                     }
                     horizontal = horizontal.siguiente;
                 }
+                
             }
-            codigodot += ";\n";
+            codigodot+="\n"
+            
             vertical = vertical.siguiente;
         }
-        codigodot += "}\n";
-        console.log(codigodot);
-        d3.select('#lienzo').graphviz()
-            .width(1200)
-            .height(1200)
-            .renderDot(codigodot)
+        codigodot+= "\"" + this.ultimo.userName + "\"" + "->" +"\""+ this.raiz.userName +"\""+ "\n"
+        codigodot+="}"
+        console.log(codigodot)
+        d3.select('#lienzoLibroVenta').graphviz()
+        .width(500)
+        .height(500)
+        .renderDot(codigodot)
 
+        return codigodot;
+        
 
     }
 
 }
 
-let listaLista = new ListadeListas();
+let listadeListasClientes = new ListadeListas();

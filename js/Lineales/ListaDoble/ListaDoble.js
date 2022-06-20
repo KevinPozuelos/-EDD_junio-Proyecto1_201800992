@@ -1,9 +1,8 @@
 
 class Nodo {
-    constructor(dpi, userName, nombreCompleto, cantidadLibros) {
-        this.dpi = dpi;
+    constructor(userName, cantidadLibros) {
+    
         this.userName = userName;
-        this.nombreCompleto = nombreCompleto;
         this.cantidadLibros = cantidadLibros;
 
 
@@ -34,9 +33,9 @@ class ListaDoble {
 
 
 
-    insertar = (dpi, userName, nombreCompleto, cantidadLibros) => {
+    insertar = (userName,cantidadLibros) => {
 
-        let nodo_nuevo = new Nodo(dpi, userName, nombreCompleto, cantidadLibros);
+        let nodo_nuevo = new Nodo(userName, cantidadLibros);
 
         if (this.vacia() == true) {
             this.set_primero(nodo_nuevo);
@@ -50,8 +49,8 @@ class ListaDoble {
         }
     }
 
-    insertarOrdenado = (dpi, userName, nombreCompleto, cantidadLibros) => {
-        let nuevo = new Nodo(dpi, userName, nombreCompleto, cantidadLibros);
+    insertarOrdenado = (userName, cantidadLibros) => {
+        let nuevo = new Nodo(userName, cantidadLibros);
         if (this.buscar(userName)) {
             console.log('El usuario ya existe')
         } else {
@@ -120,7 +119,7 @@ class ListaDoble {
     }
 
     buscar = (nombre) => {
-        if (this.vacia) {
+        if (this.vacia()) {
             console.log('Lista vacia')
             return false
         } else {
@@ -139,6 +138,33 @@ class ListaDoble {
         }
         console.log('No se encontro')
         return false
+    }
+    buscarNodoC = (nombre) => {
+        if (this.vacia()) {
+            console.log('Lista vacia')
+            return false
+        } else {
+            if (nombre == this.primero.userName) {
+                console.log('Encontrado')
+                return this.get_primero()
+            }
+            let aux = this.get_primero();
+            while (aux != null) {
+                if (nombre == aux.userName) {
+                    console.log("Se encontro dato" + aux.userName)
+                    return aux
+                }
+                aux = aux.get_siguiente()
+            }
+        }
+        console.log('No se encontro')
+        return false
+    }
+
+    modificar = (nombre) => {
+        if(this.buscar(nombre)){
+            this.buscarNodoC(nombre).cantidadLibros +1
+        }
     }
 
     get_primero = () => {
@@ -166,7 +192,7 @@ class ListaDoble {
         var Nnode = 0;
 
         while (temp != null) {
-            nodes += "N" + Nnode + " [label=\"" + "\\n" + temp.nombreCompleto + "\\n" + temp.cantidadLibros + "\\n" + "\"];\n";
+            nodes += "N" + Nnode + " [label=\"" + "\\n" + temp.userName + "\\n" + temp.cantidadLibros + "\\n" + "\"];\n";
             if (temp.get_siguiente() != null) {
                 var auxnum = Nnode + 1;
                 conexiones += "N" + Nnode + "->" + "N" + auxnum + "[dir=both];\n";
@@ -178,6 +204,11 @@ class ListaDoble {
         codigodot += nodes + "\n"
         codigodot += "//agregando conexiones o flechas\n"
         codigodot += "\n" + conexiones + "\n}\n}"
+        d3.select('#lienzoTop').graphviz()
+        .width(500)
+        .height(500)
+        .renderDot(codigodot)
+
         return console.log(codigodot);
         
     }

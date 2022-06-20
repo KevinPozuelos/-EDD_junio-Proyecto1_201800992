@@ -118,7 +118,7 @@ class ListaDobleLibros {
     }
 
     buscar = (nombre) => {
-        if (this.vacia) {
+        if (this.vacia()) {
             console.log('Lista vacia')
             return false
         } else {
@@ -138,6 +138,54 @@ class ListaDobleLibros {
         console.log('No se encontro')
         return false
     }
+
+    buscarNodo = (nombre) => {
+        if (this.vacia()) {
+            console.log('Lista vacia')
+            return false
+        } else {
+            if (nombre == this.primero.nombreLibro) {
+                console.log('Encontrado')
+                return this.get_primero()
+            }
+            let aux = this.get_primero();
+            while (aux != null) {
+                if (nombre == aux.nombreLibro) {
+                    console.log("Se encontro dato" + aux.nombreLibro)
+                    return aux
+                }
+                aux = aux.get_siguiente()
+            }
+        }
+        console.log('No se encontro')
+        return false
+    }
+
+    getCantidad = (nombre) => {
+        if (this.buscar(nombre)) {
+            if (this.buscarNodo(nombre).cantidadLibros == 0) {
+                console.log('No hay libros')
+                return false
+            }else{
+                console.log("hay libros")
+                return true
+            }
+        
+
+        }
+    }
+        
+
+    modificar = (nombre) => {
+        if (this.buscar(nombre)) {
+            this.buscarNodo(nombre).cantidadLibros = (this.buscarNodo(nombre).cantidadLibros - 1)
+            console.log("Se modifico")
+        } else {
+            console.log("No existe libro")
+        }
+    }
+
+
 
     get_primero = () => {
         return this.primero;
@@ -177,12 +225,12 @@ class ListaDobleLibros {
         codigodot += "//agregando conexiones o flechas\n"
         codigodot += "\n" + conexiones + "\n}\n}"
         d3.select('#lienzoAcendente').graphviz()
-        .width(600)
-        .height(600)
-        .renderDot(codigodot)
+            .width(600)
+            .height(600)
+            .renderDot(codigodot)
 
         return console.log(codigodot);
-        
+
     }
 
     graficarCliente2 = () => {
@@ -206,12 +254,40 @@ class ListaDobleLibros {
         codigodot += "//agregando conexiones o flechas\n"
         codigodot += "\n" + conexiones + "\n}\n}"
         d3.select('#lienzoAcendente').graphviz()
-        .width(600)
-        .height(600)
-        .renderDot(codigodot)
+            .width(600)
+            .height(600)
+            .renderDot(codigodot)
 
         return console.log(codigodot);
-        
+
+    }
+    graficarCliente3 = () => {
+        var codigodot = "digraph G{rankdir=LR;\nlabel=\" Libros \";\nnode [shape=box];\n nodesep=1;\n" + "node [shape=record fontname=Arial]\n;";
+        var temp = this.get_primero();
+        var nodes = "";
+        var conexiones = "";
+        var Nnode = 0;
+
+        while (temp != null) {
+            nodes += "N" + Nnode + " [label=\"" + "\\n" + temp.nombreLibro + "\\n" + temp.cantidadLibros + "\\n" + "\"];\n";
+            if (temp.get_siguiente() != null) {
+                var auxnum = Nnode + 1;
+                conexiones += "N" + Nnode + "->" + "N" + auxnum + "[dir=both];\n";
+            }
+            temp = temp.siguiente;
+            Nnode++;
+        }
+        codigodot += "//agregando nodos\n"
+        codigodot += nodes + "\n"
+        codigodot += "//agregando conexiones o flechas\n"
+        codigodot += "\n" + conexiones + "\n}\n}"
+        d3.select('#lienzoLibroVenta').graphviz()
+            .width(1500)
+            .height(100)
+            .renderDot(codigodot)
+
+        return console.log(codigodot);
+
     }
 }
 var Libros = new ListaDobleLibros();

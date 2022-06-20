@@ -10,11 +10,11 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="./css/Cliente.css">
   <link rel="stylesheet" type="text/css" href="./css/slide.css">
-  <script type="text/javascript" src="./js/Lineales/ListaDoble/ListaDoble.js"></script>
+  
   <script src="//d3js.org/d3.v5.min.js"></script>
   <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
   <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
-  <script type="text/javascript" src="./js/Lineales/ListaDoble/ListaCircularDoble.js"></script>
+  
 
 </head>
 
@@ -71,13 +71,31 @@
       document.getElementById("Libros").style.display = "none";
       document.getElementById("containerslide").style.display = "none";
       document.getElementById("Libreras").style.display = "none";
+      document.getElementById("libroAcomprar").style.display = "none";
     }
     function enablediv11() {
       document.getElementById("Autores").style.display = "none";
       document.getElementById("Libros").style.display = "none";
       document.getElementById("containerslide").style.display = "none";
       document.getElementById("Libreras").style.display = "";
+      document.getElementById("libroAcomprar").style.display = "none";
     }
+
+    function enablediv12() {
+      document.getElementById("Autores").style.display = "none";
+      document.getElementById("Libros").style.display = "none";
+      document.getElementById("containerslide").style.display = "none";
+      document.getElementById("Libreras").style.display = "none";
+      document.getElementById("librosAlaVenta").style.display = "";
+    }
+    function enablediv13() {
+      document.getElementById("Autores").style.display = "none";
+      document.getElementById("Libros").style.display = "none";
+      document.getElementById("containerslide").style.display = "";
+      document.getElementById("Libreras").style.display = "none";
+      document.getElementById("librosAlaVenta").style.display = "none";
+      console.log("hola")
+    } 
 
 
   </script>
@@ -89,7 +107,7 @@
           <a class="navbar-brand" href="#">LIBERIA USAC</a>
         </div>
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
+          <li  class="active"><a href="#">Home</a></li>
           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">CARGA <span
                 class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -168,7 +186,7 @@
   </div>
 
   <script language="JavaScript">
-
+    var contador = 0;
 
     function Login(lista) {
 
@@ -287,16 +305,40 @@
       reader.readAsText(file);
     }
 
+    function ComprarLibro(libros,Cola,lislistas){
+      let username = document.getElementById("userLO1").textContent;
+      let nombrelibro = document.getElementById("libroAcomprar").value;
+      
+      if(libros.getCantidad(nombrelibro)){
+        contador++;
+        libros.modificar(nombrelibro)
+        lislistas.insert(username, nombrelibro)
+        
+      }else{
+        
+        Cola.enqueue(nombrelibro, username)
+      }
+      document.getElementById("cantidadLibros").textContent = contador;
+    }
+    function AgregarAlTop(top){
+      var username = document.getElementById("userLO1").textContent;
+      var cantidadLibros = document.getElementById("cantidadLibros").textContent;
+      top.insertarOrdenado(username, cantidadLibros)
+      contador = 0;
+    }
+
 
 
   </script>
 
   <script type="text/javascript" src="./js/Lineales/ListaDoble/ListadeListas.js"></script>
   <script type="text/javascript" src="./js/Lineales/Arboreas/abb.js"></script>
-
   <script type="text/javascript" src="./js/Lineales/Matriz/Dispersa.js"></script>
   <script type="text/javascript" src="./js/Lineales/Matriz/Ortogonal.js"></script>
   <script type="text/javascript" src="./js/Lineales/ListaDoble/libros.js"></script>
+  <script type="text/javascript" src="./js/Lineales/ListaDoble/Queue.js"></script>
+  <script type="text/javascript" src="./js/Lineales/ListaDoble/ListaCircularDoble.js"></script>
+  <script type="text/javascript" src="./js/Lineales/ListaDoble/ListaDoble.js"></script>
   <div id="User-Home">
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
@@ -304,17 +346,17 @@
           <a class="navbar-brand" href="#">LIBERIA USAC</a>
         </div>
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Home</a></li>
+          <li onclick="enablediv13()" class="active"><a href="#">Home</a></li>
           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">MENU<span
                 class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li onclick="enablediv3()"><a href="#">COMPRA DE LIBROS</a></li>
+              <li onclick="enablediv12()"><a href="#">COMPRA DE LIBROS</a></li>
               <li onclick="enablediv10()"><a href="#">VISTA AUTORES</a></li>
               <li onclick="enablediv9()"><a href="#">VISTA LIBROS </a></li>
               <li onclick="enablediv11()"><a href="#">VISTA LIBRERIAS </a></li>
             </ul>
           </li>
-          <li onclick="Cliente.dot2()"><a href="#">IMAGENES</a></li>
+          <li><a href="#">IMAGENES</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li onclick="enablediv()"><a href="#" id="userLO1"><span class="glyphicon glyphicon-user"></span> Sign
@@ -343,7 +385,7 @@
               src="http://harpolibros.com/modules/homeslider/images/848fb49bf2c4fb7f55963df2b14a273ae1dcac26_slide jon bilbao.jpg" />
           </li>
           <li id="slide4">
-            < <img
+            <img
               src="http://harpolibros.com/modules/homeslider/images/3d8346adbcf6b9e001e681fb864c868643ed0008_slide EMILY.jpg" />
           </li>
         </ul>
@@ -364,35 +406,56 @@
         </ul>
         <div>
           <h2>TOP CLIENTES</h2>
-          <button>Mostrar</button>
+          <button onclick="topClientes.graficarCliente()">Mostrar</button>
           <div id="lienzoTop"></div>
         </div>
 
-      </div>
+        </div>
 
+        
+        <div id="librosAlaVenta" style="display:none">
+          <h1>COMPRA DE LIBROS</h1>
+          <button onclick="coladeEspera.graficarCola()">Estado de la Cola</button>
+        <button onclick="listadeListasClientes.graph()">Estado de la lista de listas</button>
+          <h4 id="listaLibrosDisponibles" onclick="Libros.graficarCliente3()">Lista de libros</h4>
+          <h6 id="cantidadLibros"></h6>
+          <div id="Compras">
+            <div>
+              <input id="libroAcomprar" type="text" class="form-control" placeholder="Nombre del libro">
+              <button onclick="ComprarLibro(Libros,coladeEspera,listadeListasClientes)">
+                Comprar
+              </button>
+              <button onclick="AgregarAlTop(topClientes)">Finalizar Compras</button>
+              <div id="lienzoLibroVenta">
 
-      <div id="Compras" style="display: none">
-
-      </div>
+              </div>
+            </div>
+        </div>
+        </div>
+        
+        
+        
       <div id="Libros" style="display: none">
+        
         <div id="lienzoAcendente">
           <button onclick="Libros.graficarCliente()">BubleSort</button>
         </div>
         <div id="lienzoDescendente" style="display: flex; justify-content: center;
               align-items: center;">
           <button onclick="Libros.graficarCliente2()">QuickSort</button>
+          
         </div>
       </div>
 
     </div>
-    
+
 
 
     <div id="Autores" style="display: none">
       <form>
         <div class="form-group">
           <label>Busque de autor</label>
-          <input id="BusquedaAutor" type="text" class="form-control" placeholder="User Name">
+          <input id="BusquedaAutor" type="text" class="form-control" placeholder="Nombre del autor">
           <button onclick="buscarAutor(Autores)">BUSCAR AUTOR</button>
           <h1 id="NombreAutorP"></h1>
           <p id="BiografiaP"></p>
@@ -402,10 +465,10 @@
         </div>
       </form>
     </div>
-      <div id="Libreras" style=" display: none ; background-image: url('/img/estanteria-berlin-4-estantes-surtida-150.jpg');height: 750px;
+    <div id="Libreras" style=" display: none ; background-image: url('/img/estanteria-berlin-4-estantes-surtida-150.jpg');height: 750px;
       width: 120%;background-repeat: no-repeat, no-repeat">
-        <button onclick="Fantasia.graphL()">MOSTRAR LIBERAS</button>
-      </div>
+      <button onclick="Fantasia.graphL()">MOSTRAR LIBERAS</button>
+    </div>
 
   </div>
   </div>
